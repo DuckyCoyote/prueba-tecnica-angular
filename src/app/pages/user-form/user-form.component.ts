@@ -36,6 +36,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
   private modalSubscription?: Subscription;
 
+  formErrors: { [key: string]: string } = {};
+
   constructor(
     private userService: UserService,
     private cpService: CpInfoService,
@@ -122,9 +124,38 @@ export class UserFormComponent implements OnInit, OnDestroy {
     }
   }
 
+  validateForm(): boolean {
+    this.formErrors = {};
+    let valid = true;
+    if (!this.user.name || this.user.name.trim().length < 2) {
+      this.formErrors['name'] = 'El nombre es obligatorio y debe tener al menos 2 caracteres.';
+      valid = false;
+    }
+    if (!this.user.lastName || this.user.lastName.trim().length < 2) {
+      this.formErrors['lastName'] = 'El apellido es obligatorio y debe tener al menos 2 caracteres.';
+      valid = false;
+    }
+    if (!this.user.email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(this.user.email)) {
+      this.formErrors['email'] = 'Correo electrónico inválido.';
+      valid = false;
+    }
+    if (!this.calle || this.calle.trim().length < 2) {
+      this.formErrors['calle'] = 'La calle es obligatoria.';
+      valid = false;
+    }
+    if (!this.cp || !/^\d{5}$/.test(this.cp)) {
+      this.formErrors['cp'] = 'El código postal debe ser de 5 dígitos.';
+      valid = false;
+    }
+    if (!this.selectedCpInfo.asentamiento) {
+      this.formErrors['asentamiento'] = 'Selecciona un asentamiento.';
+      valid = false;
+    }
+    return valid;
+  }
+
   submit() {
-    if (!this.user.name || !this.user.lastName || !this.user.email || !this.user.address) {
-      console.error('Todos los campos son requeridos');
+    if (!this.validateForm()) {
       return;
     }
 
