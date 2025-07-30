@@ -1,0 +1,118 @@
+<div class="modal-overlay">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2>{{ isEditing ? 'Editar Usuario' : 'Nuevo Usuario' }}</h2>
+      <button type="button" class="btn-close" (click)="modalService.close()">×</button>
+    </div>
+
+    <div class="modal-content">
+      <form (ngSubmit)="submit()" #userForm="ngForm">
+        <div class="form-group">
+          <label for="name">Nombre:</label>
+          <input
+            id="name"
+            type="text"
+            [(ngModel)]="user.name"
+            name="name"
+            placeholder="Nombre"
+            required
+          />
+        </div>
+    
+    <div class="form-group">
+      <input
+        type="text"
+        [(ngModel)]="user.lastName"
+        name="lastName"
+        placeholder="Apellido"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <input
+        type="email"
+        [(ngModel)]="user.email"
+        name="email"
+        placeholder="Correo"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <input
+        type="text"
+        [(ngModel)]="calle"
+        name="calle"
+        placeholder="Calle"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <input
+        type="text"
+        [(ngModel)]="cp"
+        name="cp"
+        placeholder="Código Postal"
+        (change)="getDireccion()"
+        required
+      />
+    </div>
+
+    <div class="form-group" *ngIf="cpInfoList.length > 0">
+      <div class="select-group">
+        <label>Asentamiento</label>
+        <select [(ngModel)]="selectedCpInfo.asentamiento" name="asentamiento" (change)="onAsentamientoChange()">
+          <option value="">Selecciona un asentamiento</option>
+          <option *ngFor="let info of cpInfoList" [value]="info.asentamiento">
+            {{info.asentamiento}}
+          </option>
+        </select>
+      </div>
+
+      <div class="select-group">
+        <label>Tipo de Asentamiento</label>
+        <select [(ngModel)]="selectedCpInfo.tipo_asentamiento" name="tipo_asentamiento" disabled>
+          <option [value]="selectedCpInfo.tipo_asentamiento">
+            {{selectedCpInfo.tipo_asentamiento}}
+          </option>
+        </select>
+      </div>
+
+      <div class="select-group">
+        <label>Municipio</label>
+        <select [(ngModel)]="selectedCpInfo.municipio" name="municipio" disabled>
+          <option [value]="selectedCpInfo.municipio">
+            {{selectedCpInfo.municipio}}
+          </option>
+        </select>
+      </div>
+
+      <div class="select-group">
+        <label>Estado</label>
+        <select [(ngModel)]="selectedCpInfo.estado" name="estado" disabled>
+          <option [value]="selectedCpInfo.estado">
+            {{selectedCpInfo.estado}}
+          </option>
+        </select>
+      </div>
+
+      <div class="select-group">
+        <label>País</label>
+        <select [(ngModel)]="selectedCpInfo.pais" name="pais" disabled>
+          <option [value]="selectedCpInfo.pais">
+            {{selectedCpInfo.pais}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <p><strong>Dirección completa:</strong></p>
+      <p>{{ user.address }}</p>
+    </div>
+
+    <button type="submit">Guardar</button>
+  </form>
+</div>
