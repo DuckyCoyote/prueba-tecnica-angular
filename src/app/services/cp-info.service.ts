@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs';
+import { env } from 'process';
 
 @Injectable({ providedIn: 'root' })
 export class CpInfoService {
-  private token = 'a1ba46bb-5579-4ba5-adb8-89abef0ba2b5';
+  private token = process.env.CP_INFO_API_TOKEN || 'your_default_token_here';
   private baseUrl = 'https://api.copomex.com/query/info_cp/';
 
   constructor(private http: HttpClient) {}
